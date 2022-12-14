@@ -5,13 +5,15 @@
 **  SO THAT I can manage my time effectively
 */
 
+// const { contains } = require("jquery");
+
 //const { holdReady } = require("jquery");
 
 // Global veriables 
 
 // will store: id, time, input, which then will be upated and saved based on the id from local storange
 var data = [];
-var pageRow = $(".row");
+var container = $(".container");
 
 
 var startOfBusiness = moment(09, 'hh');
@@ -57,19 +59,28 @@ localStorage.setItem("data", JSON.stringify(data));
 var getItem = JSON.parse(localStorage.getItem("data"));
 getItem.forEach(function (item, index) {
 
-    var columns = `
-  <div class="col col-2 hour">
-     ${item.time}
-  </div>
-  <div class=" col col-8">
-  ${item.inputs}
-  </div>
-  <div class=" col col-2">
-    save button
-  </div
-`
+    var rows = `
 
-    pageRow.append(columns);
+    <div class="row">
+        <div class=" plans col col-1 hour">
+        ${item.time}
+        </div>
+        <div class=" plans future col col-10">
+        ${item.inputs}
+        </div>
+        <div class=" plans saveBtn col col-1">
+        <i class="fas fa-upload"></i>
+    
+        </div>
+  </div>
+`
+    container.append(rows);
+
+    // increasing the i fontawesome size
+    $(".fa-upload").css({
+        "font-size": "1.5rem",
+        "text-align": "justify"
+    });
 
 });
 
