@@ -7,27 +7,79 @@
 
 //const { holdReady } = require("jquery");
 
-// ## Acceptance Criteria
+// Global veriables 
 
+// will store: id, time, input, which then will be upated and saved based on the id from local storange
+var data = [];
+var pageRow = $(".row");
+
+
+var startOfBusiness = moment(09, 'hh');
+var mclone = startOfBusiness.clone();
+
+
+// 1. Need two sets of logical code, one is to create time and store it in the local storage
+// 2. Retrive the data and presented in the window
+
+
+
+// ## Acceptance Criteria
+// 1. working on one
 //  Display the current day at the top of the calender when a user opens the planner.
 var currentDay = moment().format('dddd MMM Do');;
-document.getElementById("currentDay").innerHTML = currentDay;
+$("#currentDay").text(currentDay);
 
 // Present timeblocks for standard business hours when the user scrolls down.
-// - got every hour create a time block row from  9-5
-//  - To do that need loop to start looking from 9 and break at 5
-//  - For every lool generate html and check if its = or greate then break
+// - Create a time block row from  9-5
+//  - Use a loop to start looking from 9 and break at 5
+// 
 
 // var hours = moment(09, HH);
-var startOfBusiness = moment(09, 'hh');
 
-while (startOfBusiness.hour() < 18) {
-    console.log(startOfBusiness.format('hha'));
 
-    startOfBusiness.add(1, 'hours');
+for (var i = 0; mclone.hour() < 18; i++) {
 
-    console.log(moment().format("HH").isBefore(startOfBusiness));
+    var objects = {
+
+        id: i,
+        time: mclone.format('ha'),
+        inputs: []
+    }
+    // console.log(objects);
+    data.push(objects);
+    // data.push(objects);
+
+    mclone.add(1, 'hours');
 }
+
+localStorage.setItem("data", JSON.stringify(data));
+
+var getItem = JSON.parse(localStorage.getItem("data"));
+getItem.forEach(function (item, index) {
+
+    var columns = `
+  <div class="col col-2 hour">
+     ${item.time}
+  </div>
+  <div class=" col col-8">
+  ${item.inputs}
+  </div>
+  <div class=" col col-2">
+    save button
+  </div
+`
+
+    pageRow.append(columns);
+
+});
+
+
+// 2. Got  day time in to local storange. now get the data, write some html and present it to the browser 
+
+
+
+// Now store the data array into local storage
+
 
 // for (i = 9; i > 4; --i) {
 //     console.log(i + hours);
