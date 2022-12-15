@@ -5,6 +5,8 @@
 **  SO THAT I can manage my time effectively
 */
 
+//const { type } = require("jquery");
+
 // const { contains } = require("jquery");
 
 //const { holdReady } = require("jquery");
@@ -19,6 +21,17 @@ var container = $(".container");
 var startOfBusiness = moment(09, 'hh');
 var mclone = startOfBusiness.clone();
 
+function getStoredItem() {
+    return JSON.parse(localStorage.getItem('Planner')) || [];
+}
+function storeItems(array) {
+    return localStorage.setItem('Planner', JSON.stringify(array));
+}
+
+function deleteStoredItem() {
+}
+
+
 
 // 1. Need two sets of logical code, one is to create time and store it in the local storage
 // 2. Retrive the data and presented in the window
@@ -26,6 +39,7 @@ var mclone = startOfBusiness.clone();
 
 
 // ## Acceptance Criteria
+
 // 1. working on one
 //  Display the current day at the top of the calender when a user opens the planner.
 var currentDay = moment().format('dddd MMM Do');;
@@ -40,9 +54,7 @@ $("#currentDay").text(currentDay);
 
 
 for (var i = 0; mclone.hour() < 18; i++) {
-
     var objects = {
-
         id: i,
         time: mclone.format('ha'),
         inputs: []
@@ -50,28 +62,24 @@ for (var i = 0; mclone.hour() < 18; i++) {
     // console.log(objects);
     data.push(objects);
     // data.push(objects);
-
     mclone.add(1, 'hours');
 }
 
 localStorage.setItem("data", JSON.stringify(data));
 
-var getItem = JSON.parse(localStorage.getItem("data"));
+// 2. Got  day time in to local storange. now get the data, write some html and present it to the browser 
+var getItem = JSON.parse(localStorage.getItem("data")) || [];
 getItem.forEach(function (item, index) {
-
     var rows = `
-
-    <div class="row">
-        <div class=" plans col col-1 hour">
+    <div class="row id-${item.id}" data-id="${item.id}">
+        <div  class="plans col col-md-1 hour">
         ${item.time}
         </div>
-        <div class=" plans future col col-10">
-        ${item.inputs}
-        </div>
-        <div class=" plans saveBtn col col-1">
-        <i class="fas fa-upload"></i>
-    
-        </div>
+        <textarea data-textareaId="${item.id}"class="input future col-md-10" id="id-${item.id}">
+        </textarea>  
+        <button class="plans saveBtn col col-md-1 data-btnId=${item.id}">
+        <i class="fas fa-upload"> </i>    
+        </button>
   </div>
 `
     container.append(rows);
@@ -81,20 +89,70 @@ getItem.forEach(function (item, index) {
         "font-size": "1.5rem",
         "text-align": "justify"
     });
-
 });
 
+// storing data 
+function saveInputs(e) {
+    e.preventDefault;
+    var setSavedItem = getStoredItem();
+    var inputVal = $(this).siblings('.input').val().trim();
+    rowId = $(this).parent().attr('id');
+    var textAreadID = $(this).siblings('.input').data('textareaid');
 
-// 2. Got  day time in to local storange. now get the data, write some html and present it to the browser 
-
+    if (inputVal.length > 0) {
+        var planObj = {
+            "textAreadID": textAreadID,
+            "planText": inputVal
+        }
+        setSavedItem.push(planObj);
+        localStorage.removeItem(textAreadID);
+        storeItems(setSavedItem);
+    }
+}
 
 
 // Now store the data array into local storage
 
+var saveBtn = $("button");
+//var storeVal = [];
+saveBtn.on("click", saveInputs);
+// saveBtn.on("click", displayStoredItem);
 
-// for (i = 9; i > 4; --i) {
-//     console.log(i + hours);
-// }
+
+(function displayStoredItem() {
+
+
+    // var dataId = $(this).siblings('.input').data('textareaid');
+    // console.log('this is getting id on click', dataId);
+
+    var str = ' ';
+
+    var getItem = getStoredItem();
+    getItem.forEach((item, index) => {
+        if (item.textAreadID === 0) {
+            str = ' ';
+            str += item.planText + '\n';
+            $('textarea#id-0').val(str);
+        } if (item.textAreadID === 1) {
+            str = ' ';
+            str += item.planText + '\n';
+            $('textarea#id-1').val(str);
+        }
+    })
+
+})();
+
+// var inputVal = JSON.parse(localStorage.getItem("inputDate")) || [];
+
+// inputVal.forEach((item, index) => {
+//     if (item.id.includes(0) > 0) {
+//         console.log('id: ' + item.id);
+//     };
+// });
+
+
+
+
 
 
 // * Color-code each timeblock based on past, present, and future when the timeblock is viewed.
