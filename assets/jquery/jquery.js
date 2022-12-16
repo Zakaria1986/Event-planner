@@ -133,10 +133,45 @@ saveBtn.on("click", saveInputs);
             str = ' ';
             str += item.planText + '\n';
             $('textarea#id-0').val(str);
-        } if (item.textAreadID === 1) {
+        }
+        else if (item.textAreadID === 1) {
             str = ' ';
             str += item.planText + '\n';
             $('textarea#id-1').val(str);
+        }
+        else if (item.textAreadID === 2) {
+            str = ' ';
+            str += item.planText + '\n';
+            $('textarea#id-2').val(str);
+        }
+        else if (item.textAreadID === 3) {
+            str = ' ';
+            str += item.planText + '\n';
+            $('textarea#id-3').val(str);
+        }
+        else if (item.textAreadID === 4) {
+            str = ' ';
+            str += item.planText + '\n';
+            $('textarea#id-4').val(str);
+        }
+        else if (item.textAreadID === 5) {
+            str = ' ';
+            str += item.planText + '\n';
+            $('textarea#id-5').val(str);
+        } else if (item.textAreadID === 6) {
+            str = ' ';
+            str += item.planText + '\n';
+            $('textarea#id-6').val(str);
+        }
+        else if (item.textAreadID === 7) {
+            str = ' ';
+            str += item.planText + '\n';
+            $('textarea#id-7').val(str);
+        }
+        else if (item.textAreadID === 8) {
+            str = ' ';
+            str += item.planText + '\n';
+            $('textarea#id-8').val(str);
         }
     })
 
