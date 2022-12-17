@@ -20,6 +20,7 @@ var container = $(".container");
 
 var startOfBusiness = moment(09, 'hh');
 var mclone = startOfBusiness.clone();
+var setColourOnTime = startOfBusiness.clone();
 
 function getStoredItem() {
     return JSON.parse(localStorage.getItem('Planner')) || [];
@@ -61,8 +62,10 @@ for (var i = 0; mclone.hour() < 18; i++) {
     }
     // console.log(objects);
     data.push(objects);
+    //console.log(mclone.format('h'));
     // data.push(objects);
     mclone.add(1, 'hours');
+
 }
 
 localStorage.setItem("data", JSON.stringify(data));
@@ -120,13 +123,10 @@ saveBtn.on("click", saveInputs);
 
 
 (function displayStoredItem() {
-
-
     // var dataId = $(this).siblings('.input').data('textareaid');
     // console.log('this is getting id on click', dataId);
 
     var str = ' ';
-
     var getItem = getStoredItem();
     getItem.forEach((item, index) => {
         if (item.textAreadID === 0) {
@@ -177,21 +177,28 @@ saveBtn.on("click", saveInputs);
 
 })();
 
-// var inputVal = JSON.parse(localStorage.getItem("inputDate")) || [];
-
-// inputVal.forEach((item, index) => {
-//     if (item.id.includes(0) > 0) {
-//         console.log('id: ' + item.id);
-//     };
-// });
-
-
-
-
-
 
 // * Color-code each timeblock based on past, present, and future when the timeblock is viewed.
- // Use isBefore method in moment to check the moments
+// Use isBefore method in moment to check the moments
+
+(function changeTextAreaColor() {
+    var currentTime = moment().hours();
+    console.log(currentTime);
+    for (var i = 0; setColourOnTime.hour() < 18; i++) {
+        // This code loops over the current time from 9 to 5 and seets and sets background to grey untill current times matches with then set it to red and breaks out of the loop
+        var time = setColourOnTime.format('h');
+        console.log('time', time);
+        $(`textarea#id-${i}`).css("background", "grey");
+        if (time == currentTime) {
+            console.log(i);
+            $(`#id-${i}`).css("background", "red");
+            break;
+        }
+
+        setColourOnTime.add(1, 'hours');
+    }
+})();
+
 
 
 //  * Allow a user to enter an event when they click a timeblock
