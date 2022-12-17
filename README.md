@@ -10,7 +10,7 @@ Live URL: https://zakaria1986.github.io/Event-planner/
 
 **  Therefor manage your time effectively
 
-** App overview: 
+# App overview: 
 
 
 
