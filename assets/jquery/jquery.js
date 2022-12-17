@@ -16,7 +16,7 @@
 // will store: id, time, input, which then will be upated and saved based on the id from local storange
 var data = [];
 var container = $(".container");
-
+var elementId;
 
 var startOfBusiness = moment(09, 'hh');
 var mclone = startOfBusiness.clone();
@@ -30,15 +30,11 @@ function storeItems(array) {
 }
 
 function deleteStoredItem() {
+    return localStorage.removeItem('Planner');
 }
-
-
 
 // 1. Need two sets of logical code, one is to create time and store it in the local storage
 // 2. Retrive the data and presented in the window
-
-
-
 // ## Acceptance Criteria
 
 // 1. working on one
@@ -52,8 +48,6 @@ $("#currentDay").text(currentDay);
 // 
 
 // var hours = moment(09, HH);
-
-
 for (var i = 0; mclone.hour() < 18; i++) {
     var objects = {
         id: i,
@@ -65,7 +59,6 @@ for (var i = 0; mclone.hour() < 18; i++) {
     //console.log(mclone.format('h'));
     // data.push(objects);
     mclone.add(1, 'hours');
-
 }
 
 localStorage.setItem("data", JSON.stringify(data));
@@ -101,30 +94,47 @@ function saveInputs(e) {
     var inputVal = $(this).siblings('.input').val().trim();
     rowId = $(this).parent().attr('id');
     var textAreadID = $(this).siblings('.input').data('textareaid');
+    // saving id on a global  variable
+    elementId = textAreadID;
+    console.log(inputVal)
 
-    if (inputVal.length > 0) {
-        var planObj = {
-            "textAreadID": textAreadID,
-            "planText": inputVal
-        }
-        setSavedItem.push(planObj);
-        localStorage.removeItem(textAreadID);
-        storeItems(setSavedItem);
+    var planObj = {
+        "textAreadID": textAreadID,
+        "planText": inputVal
     }
+    setSavedItem.push(planObj);
+    storeItems(setSavedItem);
+
+    // user saved message
+
+    $(".container")
+        .prepend('<p class="userAlertMessage">Appointment added to <span style="color:red">localstorage</span></p>')
+        .css({
+            "colour": "red",
+            "fload:": "right",
+            "padding-right": "20px",
+            "text-align": "center"
+        });
+
+    $("p.userAlertMessage").delay(700).hide("slow");
+    // var clearTime = setTimeout(function () {
+    //     $("p.userAlertMessage").hide();
+    // }, 2000);
+    // clearTimeout(clearTime);
+
 }
 
-
 // Now store the data array into local storage
-
 var saveBtn = $("button");
 //var storeVal = [];
 saveBtn.on("click", saveInputs);
 // saveBtn.on("click", displayStoredItem);
 
-
 (function displayStoredItem() {
     // var dataId = $(this).siblings('.input').data('textareaid');
     // console.log('this is getting id on click', dataId);
+
+    // alternative to this i could have used for look to changed the index therefore I would have only needed one of those block of code 
 
     var str = ' ';
     var getItem = getStoredItem();
@@ -177,33 +187,84 @@ saveBtn.on("click", saveInputs);
 
 })();
 
-
 // * Color-code each timeblock based on past, present, and future when the timeblock is viewed.
 // Use isBefore method in moment to check the moments
 
 (function changeTextAreaColor() {
+    // This set to 24 hours clock
     var currentTime = moment().hours();
     console.log(currentTime);
     for (var i = 0; setColourOnTime.hour() < 18; i++) {
         // This code loops over the current time from 9 to 5 and seets and sets background to grey untill current times matches with then set it to red and breaks out of the loop
-        var time = setColourOnTime.format('h');
+        var time = setColourOnTime.format('H');
         console.log('time', time);
-        $(`textarea#id-${i}`).css("background", "grey");
+
         if (time == currentTime) {
             console.log(i);
+            // ${i} here increments the id on each loops which then targets the text area 
             $(`#id-${i}`).css("background", "red");
             break;
+        } else if (time < currentTime) {
+            $(`textarea#id-${i}`).css("background", "grey");
+            // end of working day this clears the plan
+            if (currentTime > 17) {
+                deleteStoredItem();
+            }
         }
-
+        // increment the hours one
         setColourOnTime.add(1, 'hours');
     }
 })();
 
 
 
+
+// Ignore the code bellow
+
 //  * Allow a user to enter an event when they click a timeblock
 // * Save the event in local storage when the save button is clicked in that timeblock.
 
-
-
 //  Persist events between refreshes of a page
+
+// var arr = ["taco", "burrito", "taqwuito", "taco", "burrito", "taqwuito"]
+
+// console.log("arr : ", arr)
+// console.log("map : ", arr.map(function (cat) {
+//     return cat.toUpperCase()
+// }))
+// console.log("filter : ", arr.filter((cat, i) => {
+//     return arr.indexOf(cat) != i
+// }))
+// var thing = JSON.parse(localStorage.getItem("Planner"))
+
+// console.log("filter : ", thing.map(function (whatever) {
+//     return whatever.textAreadID
+// }).filter((cat, i) => {
+//     console.log("cat: ", cat, "thing: ", thing[i].textAreadID)
+//     console.log(i => i.item === "chips")
+//     return thing.indexOf(thing[i].textAreadID) == cat
+// }))
+
+// console.log("map : ", JSON.parse(localStorage.getItem("Planner")).map(function (cat) {
+//     return cat.textAreadID
+// }))
+
+`
+// console.log('This is clicked element id', elementId);
+// var storedData = JSON.parse(localStorage.getItem("Planner"));
+// console.log(storedData[0].textAreadID);
+
+// storedData.filter(function (arr, index) {
+//     // console.log(index, " ", arr.textAreadID)
+//     console.log(arr);
+
+// })`
+// .filter((obj, index) => {
+// / /console.log(obj);
+// });
+
+// .filter((item, index) => {
+//     console.log(item.planText)
+//     //storedData.delete(item);
+// });
+
