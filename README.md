@@ -40,6 +40,6 @@ Live URL: https://zakaria1986.github.io/Event-planner/
  ** Save each entery and show user a message that entry has been saved
 
  
- ##Please see the following link (code logic) for more infomation: https://github.com/Zakaria1986/Event-planner/blob/main/assets/jquery/jquery.js. 
+ ## Please see the following link (code logic) for more infomation: https://github.com/Zakaria1986/Event-planner/blob/main/assets/jquery/jquery.js. 
 
  Thank you for visiting! 
