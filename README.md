@@ -25,6 +25,7 @@ Live URL: https://zakaria1986.github.io/Event-planner/
   ** HTML 
   ** CSS
   ** Browser localstorange API
+  ** MomentJs time API
 
 ## Requirement of the app:
 
